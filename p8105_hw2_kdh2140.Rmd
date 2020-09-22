@@ -1,0 +1,10 @@
+---
+title: "Data Science Homework 2"
+output: github_document
+---
+
+
+```{r tidyverse, message = FALSE}
+library(tidyverse)
+```
+
