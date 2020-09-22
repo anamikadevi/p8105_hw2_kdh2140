@@ -3,8 +3,34 @@ title: "Data Science Homework 2"
 output: github_document
 ---
 
-
-```{r tidyverse, message = FALSE}
+```{r}
+library(readxl)
 library(tidyverse)
 ```
+
+
+## Problem 1
+
+```{r}
+trash_wheel = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+                         sheet = "Mr. Trash Wheel", range = "A2:N408") %>% 
+  janitor::clean_names() %>% 
+  drop_na(dumpster) %>% 
+  mutate(round(sports_balls)) %>% 
+  mutate(as.integer(sports_balls))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
