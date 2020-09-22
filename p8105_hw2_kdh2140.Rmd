@@ -3,7 +3,9 @@ title: "Data Science Homework 2"
 output: github_document
 ---
 
-```{r}
+The following libraries will be used throughout the homework. 
+
+```{r load libraries, message = FALSE}
 library(readxl)
 library(tidyverse)
 ```
@@ -11,7 +13,9 @@ library(tidyverse)
 
 ## Problem 1
 
-```{r}
+Read and clean the Mr. Trash Wheel sheet according to homework specifications. 
+
+```{r trash wheel dataset}
 trash_wheel = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
                          sheet = "Mr. Trash Wheel", range = "A2:N408") %>% 
   janitor::clean_names() %>% 
@@ -19,7 +23,17 @@ trash_wheel = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
   mutate(sports_balls = as.integer(round(sports_balls)))
 ```
 
+Read and clean the precipitation data for 2017 and 2018 according to homework.
 
+```{r precipitation datasets}
+precipitation_18 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+                         sheet = "2018 Precipitation", range = "A2:B15", col_names = TRUE) %>% 
+  janitor::clean_names()
+
+precipitation_17 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+                         sheet = "2017 Precipitation", range = "A2:B15", col_names = TRUE) %>% 
+  janitor::clean_names()
+```
 
 
 
