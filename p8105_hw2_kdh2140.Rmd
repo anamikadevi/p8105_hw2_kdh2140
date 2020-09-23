@@ -46,10 +46,15 @@ nyc_transit = read_csv("./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %
   janitor::clean_names()
 ```
 
+Convert the entry variable from character to logical
 
+```{r}
 
+```
 
+The nyc_transit database contains the variables: `r names(nyc_transit)`. It contains `r nrow(nyc_transit)` rows and `r ncol(nyc_transit)` columns. The data cleaning steps have included cleaning the names, using the clean_names function, and converting the character variable, entry, into a logical vector, using ...
 
+## Problem 3
 
 
 
