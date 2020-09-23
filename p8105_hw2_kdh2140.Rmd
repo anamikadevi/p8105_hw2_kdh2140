@@ -49,13 +49,6 @@ Merge the two datasets
 ```
 
 
-
-
-
-
-
-
-
 The Mr. Trash Wheel dataset consists of `r nrow(trash_wheel)` rows and `r ncol(trash_wheel)` columns. It includes the variables: `r names(trash_wheel)`. The median number of sports balls in a dumpster in 2017 is XX. 
 
 ## Problem 2
@@ -64,7 +57,8 @@ Read and clean the NYC transit data according to homework specifications.
 
 ```{r NYC transit dataset, message = FALSE}
 nyc_transit = read_csv("./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  select(line, station_name, station_latitude, station_longitude, route1:route11, entry, entrance_type, vending, ada)
 ```
 
 Convert the entry variable from character to logical
