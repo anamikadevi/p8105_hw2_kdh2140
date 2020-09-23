@@ -28,12 +28,33 @@ Read and clean the precipitation data for 2017 and 2018 according to homework.
 ```{r precipitation datasets}
 precipitation_18 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
                          sheet = "2018 Precipitation", range = "A2:B15", col_names = TRUE) %>% 
-  janitor::clean_names()
-
+  janitor::clean_names() %>% 
+  rename(prec = total) %>% 
+  mutate(year = 2018) %>% 
+  relocate(year) %>% 
+  
 precipitation_17 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
                          sheet = "2017 Precipitation", range = "A2:B15", col_names = TRUE) %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+   rename(prec = total) %>% 
+   mutate(year = 2017) %>% 
+   relocate(year)
+
 ```
+
+Merge the two datasets
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
 
 The Mr. Trash Wheel dataset consists of `r nrow(trash_wheel)` rows and `r ncol(trash_wheel)` columns. It includes the variables: `r names(trash_wheel)`. The median number of sports balls in a dumpster in 2017 is XX. 
 
