@@ -75,25 +75,27 @@ Read and clean the NYC transit data according to homework specifications.
 ```{r NYC transit dataset, message = FALSE}
 nyc_transit = read_csv("./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
   janitor::clean_names() %>% 
-  select(line, station_name, station_latitude, station_longitude, route1:route11, entry, entrance_type, vending, ada)
+  select(line, station_name, station_latitude, station_longitude, route1:route11, entry, entrance_type, vending, ada) %>% 
+  mutate(ada = as.logical(ada))
 ```
 
-Convert the entry variable from character to logical
+The nyc_transit dataset offers general but comprehensive information about the stations located in NYC. It contains the variables: `r names(nyc_transit)`. The dataset has `r nrow(nyc_transit)` rows and `r ncol(nyc_transit)` columns. 
 
-```{r}
-
-```
-
-The nyc_transit database contains the variables: `r names(nyc_transit)`. It contains `r nrow(nyc_transit)` rows and `r ncol(nyc_transit)` columns. 
-
-The data cleaning steps have included cleaning the names, using the clean_names() function, and selecting the variables to keep in the data set, using gthe select() function. I then converted the character variable, entry, into a logical vector, using ...
+The data cleaning steps have included cleaning the names, using the clean_names() function, selecting the variables to keep in the data set, using the select() function, and converting the ada character variable to a logical variable using the mutate() function. 
 
 The data is mostly tidy, but the columns regarding route number could be improved. 
 
-There are `r nrow(distinct(nyc_transit, line, station_name))` distinct stations within the data set. Of these `r nrow(distinct(nyc_transit, line, station_name))` stations, `r nrow(distinct(nyc_transit, station_name, ada = "TRUE"))`
+There are `r nrow(distinct(nyc_transit, line, station_name))` distinct stations within the data set. 
 
+#### Of these `r nrow(distinct(nyc_transit, line, station_name))` stations, `r nrow(distinct(nyc_transit, station_name, ada = "TRUE"))` are ada compliant.
 
-## Problem 3
+#### vending = no and entry = yes
+
+#### Reformat data so that route number and route name are distinct variables. 
+
+#### How many distinct stations serve the A train? 
+
+#### Of the stations that serve the A train, how many are ADA compliant?
 
 
 
