@@ -6,7 +6,7 @@ output: github_document
 
 The following libraries will be used throughout the homework. 
 
-```{r load libraries, message = FALSE}
+```{r load_libraries, message = FALSE}
 library(readxl)
 library(tidyverse)
 ```
@@ -16,7 +16,7 @@ library(tidyverse)
 
 Read and clean the Mr. Trash Wheel sheet according to homework specifications. 
 
-```{r trash wheel dataset}
+```{r trash_wheel_dataset}
 trash_wheel = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
                          sheet = "Mr. Trash Wheel", range = "A2:N408") %>% 
   janitor::clean_names() %>% 
@@ -29,7 +29,7 @@ trash_wheel = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
 
 Read and clean the precipitation data for 2018 and 2017 according to homework.
 
-```{r precipitation datasets}
+```{r precipitation_datasets}
 prec_18 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
                          sheet = "2018 Precipitation", range = "A2:B15") %>% 
   janitor::clean_names() %>% 
@@ -51,7 +51,7 @@ prec_17 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
 
 Merge the two datasets
 
-```{r}
+```{r binding_datasets}
 precip_df = bind_rows(prec_18, prec_17)
 
 
@@ -66,30 +66,53 @@ precip_df = bind_rows(prec_18, prec_17)
 ```
 
 
-The Mr. Trash Wheel dataset consists of `r nrow(trash_wheel)` rows and `r ncol(trash_wheel)` columns. It includes the variables: `r names(trash_wheel)`. The median number of sports balls in a dumpster in 2017 is XX. 
+The Mr. Trash Wheel dataset consists of `r nrow(trash_wheel)` rows and `r ncol(trash_wheel)` columns. It includes the variables: `r names(trash_wheel)`. The median number of sports balls in a dumpster in 2017 is `r median(trash_wheel$sports_balls)` .
 
 ## Problem 2
 
 Read and clean the NYC transit data according to homework specifications. 
 
-```{r NYC transit dataset, message = FALSE}
+```{r NYC_transit_dataset, message = FALSE}
 nyc_transit = read_csv("./data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv") %>% 
   janitor::clean_names() %>% 
-  select(line, station_name, station_latitude, station_longitude, route1:route11, entry, entrance_type, vending, ada) %>% 
+  select(line, station_name, station_latitude, station_longitude, route1:route11, 
+         entry, entrance_type, vending, ada) %>% 
   mutate(ada = as.logical(ada))
 ```
 
-The nyc_transit dataset offers general but comprehensive information about the stations located in NYC. It contains the variables: `r names(nyc_transit)`. The dataset has `r nrow(nyc_transit)` rows and `r ncol(nyc_transit)` columns. 
+The nyc_transit dataset offers general but comprehensive information about the transit stations located in NYC. It contains the variables: `r names(nyc_transit)`. Overall, the dataset has `r nrow(nyc_transit)` rows and `r ncol(nyc_transit)` columns. 
 
 The data cleaning steps have included cleaning the names, using the clean_names() function, selecting the variables to keep in the data set, using the select() function, and converting the ada character variable to a logical variable using the mutate() function. 
 
 The data is mostly tidy, but the columns regarding route number could be improved. 
 
+#### Problem 2 Questions
+
+###### How many distinct stations are there? 
+
 There are `r nrow(distinct(nyc_transit, line, station_name))` distinct stations within the data set. 
 
-#### Of these `r nrow(distinct(nyc_transit, line, station_name))` stations, `r nrow(distinct(nyc_transit, station_name, ada = "TRUE"))` are ada compliant.
+###### How many stations are ADA compliant?
 
-#### vending = no and entry = yes
+To determine which distinct stations are ADA compliant, run the following code chunk. 
+
+```{r ada}
+ada = filter(nyc_transit, ada == "TRUE") %>% 
+   distinct(line, station_name)
+```
+
+Results will output in a tibble that lists line and station name, with a total of `r nrow(distinct(ada, line, station_name))` observations (stations). 
+
+###### What proportion of station entrances / exits without vending allow entrance?
+
+To determine which distinct stations do not have vending but do allow entry, apply the following code chunk. 
+
+```{r vend}
+vend_entry = filter(nyc_transit, vending == "NO", entry == "YES") %>% 
+   distinct(line, station_name)
+```
+
+Results will output in a tibble that lists line and station name, with a total of `r nrow(distinct(vend_entry, line, station_name))` observations (stations). 
 
 #### Reformat data so that route number and route name are distinct variables. 
 
