@@ -1,5 +1,6 @@
 ---
 title: "Data Science Homework 2"
+author: Kristina Howell
 output: github_document
 ---
 
@@ -20,32 +21,48 @@ trash_wheel = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx",
                          sheet = "Mr. Trash Wheel", range = "A2:N408") %>% 
   janitor::clean_names() %>% 
   drop_na(dumpster) %>% 
-  mutate(sports_balls = as.integer(round(sports_balls)))
+  mutate(sports_balls = round(sports_balls), 
+         sports_balls = as.integer(sports_balls))
+
+#Another range argument: range = cell_cols("A:N")
 ```
 
-Read and clean the precipitation data for 2017 and 2018 according to homework.
+Read and clean the precipitation data for 2018 and 2017 according to homework.
 
 ```{r precipitation datasets}
-precipitation_18 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
-                         sheet = "2018 Precipitation", range = "A2:B15", col_names = TRUE) %>% 
+prec_18 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+                         sheet = "2018 Precipitation", range = "A2:B15") %>% 
   janitor::clean_names() %>% 
+  drop_na(month) %>% 
   rename(prec = total) %>% 
   mutate(year = 2018) %>% 
-  relocate(year) %>% 
+  relocate(year)
   
-precipitation_17 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
-                         sheet = "2017 Precipitation", range = "A2:B15", col_names = TRUE) %>% 
+  #alternate argument, skip = 1, to skip the first row of table
+  
+prec_17 = read_excel("./data/Trash-Wheel-Collection-Totals-8-6-19.xlsx", 
+                         sheet = "2017 Precipitation", range = "A2:B15") %>% 
   janitor::clean_names() %>% 
-   rename(prec = total) %>% 
-   mutate(year = 2017) %>% 
-   relocate(year)
-
+  drop_na(month) %>% 
+  rename(prec = total) %>% 
+  mutate(year = 2017) %>% 
+  relocate(year)
 ```
 
 Merge the two datasets
 
 ```{r}
+precip_df = bind_rows(prec_18, prec_17)
 
+
+#Argument to convert numerical month into words
+
+#month_df = 
+  #tibble( 
+    #month_num = 1:12, 
+    #month_name = month.name)
+
+#left_join(precip_df, month_df, by = "month")
 ```
 
 
