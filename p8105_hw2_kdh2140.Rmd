@@ -67,7 +67,14 @@ Convert the entry variable from character to logical
 
 ```
 
-The nyc_transit database contains the variables: `r names(nyc_transit)`. It contains `r nrow(nyc_transit)` rows and `r ncol(nyc_transit)` columns. The data cleaning steps have included cleaning the names, using the clean_names function, and converting the character variable, entry, into a logical vector, using ...
+The nyc_transit database contains the variables: `r names(nyc_transit)`. It contains `r nrow(nyc_transit)` rows and `r ncol(nyc_transit)` columns. 
+
+The data cleaning steps have included cleaning the names, using the clean_names() function, and selecting the variables to keep in the data set, using gthe select() function. I then converted the character variable, entry, into a logical vector, using ...
+
+The data is mostly tidy, but the columns regarding route number could be improved. 
+
+There are `r nrow(distinct(nyc_transit, line, station_name))` distinct stations within the data set. Of these `r nrow(distinct(nyc_transit, line, station_name))` stations, `r nrow(distinct(nyc_transit, station_name, ada = "TRUE"))`
+
 
 ## Problem 3
 
