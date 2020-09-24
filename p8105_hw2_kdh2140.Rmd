@@ -114,14 +114,34 @@ vend_entry = filter(nyc_transit, vending == "NO", entry == "YES") %>%
 
 Results will output in a tibble that lists line and station name, with a total of `r nrow(distinct(vend_entry, line, station_name))` observations (stations). 
 
-#### Reformat data so that route number and route name are distinct variables. 
+##### Reformat data so that route number and route name are distinct variables. 
 
-#### How many distinct stations serve the A train? 
+```{r}
 
-#### Of the stations that serve the A train, how many are ADA compliant?
+```
+
+
+###### How many distinct stations serve the A train? 
+
+###### Of the stations that serve the A train, how many are ADA compliant?
 
 
 
+## Problem 3
+
+Import the data sets
+
+```{r import_data, message = FALSE}
+
+pols_month = read_csv("./Data/fivethirtyeight_datasets/pols-month.csv") %>% 
+  separate(mon, c("year", "month", "day"))
+  
+unemploy = read_csv("./Data/fivethirtyeight_datasets/unemployment.csv") %>% 
+  janitor::clean_names()
+  
+snp = read_csv("./Data/fivethirtyeight_datasets/snp.csv")
+
+```
 
 
 
