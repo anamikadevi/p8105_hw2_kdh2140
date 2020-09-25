@@ -82,29 +82,15 @@ The data is mostly tidy, but the columns regarding route number could be improve
 
 ###### How many distinct stations are there? 
 
-There are `r nrow(distinct(nyc_transit, line, station_name))` distinct stations within the data set. 
+Regarding the distinctions between line and station name, there are `r nrow(distinct(nyc_transit, line, station_name))` distinct stations within the data set.
 
 ###### How many stations are ADA compliant?
 
-To determine which distinct stations are ADA compliant, run the following code chunk. 
-
-```{r ada}
-ada = filter(nyc_transit, ada == "TRUE") %>% 
-   distinct(line, station_name)
-```
-
-Results will output in a tibble that lists line and station name, with a total of `r nrow(distinct(ada, line, station_name))` stations that are ADA compliant. 
+There are `r nyc_transit %>% filter(ada == "TRUE") %>% distinct(station_name, line) %>% nrow()` distinct stations that are ADA compliant.
 
 ###### What proportion of station entrances / exits without vending allow entrance?
 
-To determine which distinct stations do not have vending but do allow entry, apply the following code chunk. 
-
-```{r vend}
-vend_entry = filter(nyc_transit, vending == "NO", entry == "YES") %>% 
-   distinct(line, station_name)
-```
-
-Results will output in a tibble that lists line and station name, with a total of `r nrow(distinct(vend_entry, line, station_name))` stations that allow entry/ exit without vending. 
+There are `r nyc_transit %>% filter(vending == "NO", entry == "YES") %>% distinct(station_name, line) %>% nrow()` distinct stations that allow exit/ entry without vending.
 
 ##### Reformat data so that route number and route name are distinct variables. 
 
@@ -118,14 +104,18 @@ pivot_longer(
     values_to = "route") %>% 
   select(-name) %>% 
   drop_na(route)
+
+#Note: is there a more streamlined function to mutate several variables at once?
+  #i.e. route8:route11 = as.character?
 ```
 
 ###### How many distinct stations serve the A train? 
 
+There are `r nyc_transit %>% filter(route == "A") %>% distinct(station_name, line) %>% nrow()` distinct stations that serve the A train.
 
 ###### Of the stations that serve the A train, how many are ADA compliant?
 
-
+There are `r nyc_transit %>% filter(route == "A", ada == "TRUE") %>% distinct(station_name, line) %>% nrow()` distinct stations that serve the A train and are ADA compliant.
 
 ## Problem 3
 
@@ -190,7 +180,4 @@ left_join(pols_month, unemploy, by = "month")
 
 
 ##### Write paragraph
-
-
-
 
