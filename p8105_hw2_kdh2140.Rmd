@@ -126,58 +126,64 @@ There are `r nyc_transit %>% filter(route == "A", ada == "TRUE") %>% distinct(st
 pols_month = read_csv("./Data/fivethirtyeight_datasets/pols-month.csv") %>% 
   separate(mon, c("year", "month", "day")) %>% 
   select(-day) %>% 
-  mutate(month = as.integer(month))
+  mutate(month = as.integer(month),
+         year = as.integer(year))
+
+#NEED: to create president variable.
+
+#Month is formatted correctly in the following code chunk. 
   
+snp = read_csv("./Data/fivethirtyeight_datasets/snp.csv") %>% 
+    separate(date, c("month", "day", "year")) %>% 
+    select(-day) %>% 
+    relocate(year, month) %>% 
+    mutate(month = as.integer(month),
+           year = as.integer(year))
+
+
 unemploy = read_csv("./Data/fivethirtyeight_datasets/unemployment.csv") %>% 
   janitor::clean_names() %>% 
   pivot_longer(
     jan:dec,
     names_to = "month",
     values_to = "unemployment"
-  )
-  
-snp = read_csv("./Data/fivethirtyeight_datasets/snp.csv") %>% 
-    separate(date, c("month", "day", "year")) %>% 
-    select(-day) %>% 
-    relocate(year, month) %>% 
-    mutate(month = as.integer(month))
-
+  ) %>% 
+  mutate(year = as.integer(year))
 ```
 
 
-###### Convert integer month to word month 
+##### Convert integer month to word month 
 
 ```{r month}
 
 month_df = 
   tibble( 
     month = 1:12,
-    month_name = month.name)
+    month_name = month.abb)
 
 pols_month = left_join(pols_month, month_df, by = "month") %>% 
   select(-month) %>% 
   rename(month = month_name) %>% 
-  relocate(year, month)
+  relocate(year, month) %>% 
+  mutate(month = str_to_lower(month))
 
 snp = left_join(snp, month_df, by = "month") %>% 
   select(-month) %>% 
   rename(month = month_name) %>% 
-  relocate(year, month)
+  relocate(year, month) %>% 
+  mutate(month = str_to_lower(month))
 
 ```
 
 
-Merge datasets
+##### Merge datasets by keys: year and month
 
 ```{r merge_three}
 
-complete = left_join(pols_month, snp, by = "year")
-
-left_join(pols_month, unemploy, by = "month")
-
+j_poli_df = left_join(pols_month, snp, by = c("year", "month")) %>% 
+  left_join(unemploy, by = c("year", "month"))
+ 
 ```
-
-
 
 ##### Write paragraph
 
